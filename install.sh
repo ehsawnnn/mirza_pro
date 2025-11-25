@@ -101,7 +101,7 @@ check_ssl_status() {
 }
 
 check_bot_status() {
-    if [ -f "/var/www/html/mirzabotconfig/config.php" ]; then
+    if [ -f "/var/www/html/mirzaprobotconfig/config.php" ]; then
         echo -e "\033[32m✅ Bot is installed\033[0m"
         check_ssl_status
     else
