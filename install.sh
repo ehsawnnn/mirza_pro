@@ -79,8 +79,8 @@ function show_animated_logo() {
 
 
 check_ssl_status() {
-    if [ -f "/var/www/html/mirzabotconfig/config.php" ]; then
-        domain=$(grep '^\$domainhosts' "/var/www/html/mirzabotconfig/config.php" | cut -d"'" -f2 | cut -d'/' -f1)
+    if [ -f "/var/www/html/mirzaprobotconfig/config.php" ]; then
+        domain=$(grep '^\$domainhosts' "/var/www/html/mirzaprobotconfig/config.php" | cut -d"'" -f2 | cut -d'/' -f1)
 
         if [ -n "$domain" ] && [ -f "/etc/letsencrypt/live/$domain/cert.pem" ]; then
             expiry_date=$(openssl x509 -enddate -noout -in "/etc/letsencrypt/live/$domain/cert.pem" | cut -d= -f2)
@@ -678,7 +678,7 @@ function install_bot() {
         exit 1
     }
 
-    BOT_DIR="/var/www/html/mirzabotconfig"
+    BOT_DIR="/var/www/html/mirzaprobotconfig"
     if [ -d "$BOT_DIR" ]; then
         echo -e "\e[93mDirectory $BOT_DIR already exists. Removing...\033[0m"
         sudo rm -rf "$BOT_DIR" || {
@@ -928,7 +928,7 @@ done
 
             sleep 1
 
-            file_path="/var/www/html/mirzabotconfig/config.php"
+            file_path="/var/www/html/mirzaprobotconfig/config.php"
 
             if [ -f "$file_path" ]; then
               rm "$file_path" || {
@@ -944,20 +944,20 @@ done
 
             secrettoken=$(openssl rand -base64 10 | tr -dc 'a-zA-Z0-9' | cut -c1-8)
 
-            echo -e "<?php" >> /var/www/html/mirzabotconfig/config.php
-            echo -e "${ASAS}APIKEY = '${YOUR_BOT_TOKEN}';" >> /var/www/html/mirzabotconfig/config.php
-            echo -e "${ASAS}usernamedb = '${dbuser}';" >> /var/www/html/mirzabotconfig/config.php
-            echo -e "${ASAS}passworddb = '${dbpass}';" >> /var/www/html/mirzabotconfig/config.php
-            echo -e "${ASAS}dbname = '${dbname}';" >> /var/www/html/mirzabotconfig/config.php
-            echo -e "${ASAS}domainhosts = '${YOUR_DOMAIN}/mirzabotconfig';" >> /var/www/html/mirzabotconfig/config.php
-            echo -e "${ASAS}adminnumber = '${YOUR_CHAT_ID}';" >> /var/www/html/mirzabotconfig/config.php
-            echo -e "${ASAS}usernamebot = '${YOUR_BOTNAME}';" >> /var/www/html/mirzabotconfig/config.php
-            echo -e "${ASAS}secrettoken = '${secrettoken}';" >> /var/www/html/mirzabotconfig/config.php
-            echo -e "${ASAS}connect = mysqli_connect('localhost', \$usernamedb, \$passworddb, \$dbname);" >> /var/www/html/mirzabotconfig/config.php
-            echo -e "if (${ASAS}connect->connect_error) {" >> /var/www/html/mirzabotconfig/config.php
-            echo -e "die(' The connection to the database failed:' . ${ASAS}connect->connect_error);" >> /var/www/html/mirzabotconfig/config.php
-            echo -e "}" >> /var/www/html/mirzabotconfig/config.php
-            echo -e "mysqli_set_charset(${ASAS}connect, 'utf8mb4');" >> /var/www/html/mirzabotconfig/config.php
+            echo -e "<?php" >> /var/www/html/mirzaprobotconfig/config.php
+            echo -e "${ASAS}APIKEY = '${YOUR_BOT_TOKEN}';" >> /var/www/html/mirzaprobotconfig/config.php
+            echo -e "${ASAS}usernamedb = '${dbuser}';" >> /var/www/html/mirzaprobotconfig/config.php
+            echo -e "${ASAS}passworddb = '${dbpass}';" >> /var/www/html/mirzaprobotconfig/config.php
+            echo -e "${ASAS}dbname = '${dbname}';" >> /var/www/html/mirzaprobotconfig/config.php
+            echo -e "${ASAS}domainhosts = '${YOUR_DOMAIN}/mirzaprobotconfig';" >> /var/www/html/mirzaprobotconfig/config.php
+            echo -e "${ASAS}adminnumber = '${YOUR_CHAT_ID}';" >> /var/www/html/mirzaprobotconfig/config.php
+            echo -e "${ASAS}usernamebot = '${YOUR_BOTNAME}';" >> /var/www/html/mirzaprobotconfig/config.php
+            echo -e "${ASAS}secrettoken = '${secrettoken}';" >> /var/www/html/mirzaprobotconfig/config.php
+            echo -e "${ASAS}connect = mysqli_connect('localhost', \$usernamedb, \$passworddb, \$dbname);" >> /var/www/html/mirzaprobotconfig/config.php
+            echo -e "if (${ASAS}connect->connect_error) {" >> /var/www/html/mirzaprobotconfig/config.php
+            echo -e "die(' The connection to the database failed:' . ${ASAS}connect->connect_error);" >> /var/www/html/mirzaprobotconfig/config.php
+            echo -e "}" >> /var/www/html/mirzaprobotconfig/config.php
+            echo -e "mysqli_set_charset(${ASAS}connect, 'utf8mb4');" >> /var/www/html/mirzaprobotconfig/config.php
             text_to_save=$(cat <<EOF
 \$options = [
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
@@ -972,12 +972,12 @@ try {
 }
 EOF
 )
-echo -e "$text_to_save" >> /var/www/html/mirzabotconfig/config.php
-            echo -e "?>" >> /var/www/html/mirzabotconfig/config.php
+echo -e "$text_to_save" >> /var/www/html/mirzaprobotconfig/config.php
+            echo -e "?>" >> /var/www/html/mirzaprobotconfig/config.php
 
             sleep 1
 
-            curl -F "url=https://${YOUR_DOMAIN}/mirzabotconfig/index.php" \
+            curl -F "url=https://${YOUR_DOMAIN}/mirzaprobotconfig/index.php" \
      -F "secret_token=${secrettoken}" \
      "https://api.telegram.org/bot${YOUR_BOT_TOKEN}/setWebhook" || {
                 echo -e "\e[91mError: Failed to set webhook for bot.\033[0m"
@@ -994,7 +994,7 @@ echo -e "$text_to_save" >> /var/www/html/mirzabotconfig/config.php
                 echo -e "\e[91mError: Failed to start Apache2.\033[0m"
                 exit 1
             }
-            url="https://${YOUR_DOMAIN}/mirzabotconfig/table.php"
+            url="https://${YOUR_DOMAIN}/mirzaprobotconfig/table.php"
             curl $url || {
                 echo -e "\e[91mError: Failed to fetch URL from domain.\033[0m"
                 exit 1
@@ -1243,7 +1243,7 @@ function install_bot_with_marzban() {
     }
     echo -e "\e[92mDatabase '$dbname' created successfully.\033[0m"
 
-    BOT_DIR="/var/www/html/mirzabotconfig"
+    BOT_DIR="/var/www/html/mirzaprobotconfig"
     if [ -d "$BOT_DIR" ]; then
         echo -e "\e[93mDirectory $BOT_DIR already exists. Removing...\033[0m"
         sudo rm -rf "$BOT_DIR" || {
@@ -1475,7 +1475,7 @@ try {
 ?>
 EOF
 
-    curl -F "url=https://${YOUR_DOMAIN}/mirzabotconfig/index.php" \
+    curl -F "url=https://${YOUR_DOMAIN}/mirzaprobotconfig/index.php" \
          -F "secret_token=${secrettoken}" \
          "https://api.telegram.org/bot${YOUR_BOT_TOKEN}/setWebhook" || {
         echo -e "\e[91mError: Failed to set webhook.\033[0m"
@@ -1488,7 +1488,7 @@ EOF
         return 1
     }
 
-    TABLE_SETUP_URL="https://${YOUR_DOMAIN}/mirzabotconfig/table.php"
+    TABLE_SETUP_URL="https://${YOUR_DOMAIN}/mirzaprobotconfig/table.php"
     echo -e "\033[33mSetting up database tables...\033[0m"
     curl $TABLE_SETUP_URL || {
         echo -e "\033[31mError: Failed to execute table creation script at $TABLE_SETUP_URL.\033[0m"
@@ -1515,7 +1515,7 @@ function update_bot() {
     fi
     echo -e "\e[92mServer packages updated successfully...\033[0m\n"
 
-    BOT_DIR="/var/www/html/mirzabotconfig"
+    BOT_DIR="/var/www/html/mirzaprobotconfig"
     if [ ! -d "$BOT_DIR" ]; then
         echo -e "\e[91mError: Mirza Bot is not installed. Please install it first.\033[0m"
         exit 1
@@ -1538,7 +1538,7 @@ function update_bot() {
 
     EXTRACTED_DIR=$(find "$TEMP_DIR" -mindepth 1 -maxdepth 1 -type d)
 
-    CONFIG_PATH="/var/www/html/mirzabotconfig/config.php"
+    CONFIG_PATH="/var/www/html/mirzaprobotconfig/config.php"
     TEMP_CONFIG="/root/mirza_config_backup.php"
     if [ -f "$CONFIG_PATH" ]; then
         cp "$CONFIG_PATH" "$TEMP_CONFIG" || {
@@ -1547,13 +1547,13 @@ function update_bot() {
         }
     fi
 
-    sudo rm -rf /var/www/html/mirzabotconfig || {
+    sudo rm -rf /var/www/html/mirzaprobotconfig || {
         echo -e "\e[91mFailed to remove old bot files!\033[0m"
         exit 1
     }
 
-    sudo mkdir -p /var/www/html/mirzabotconfig
-    sudo mv "$EXTRACTED_DIR"/* /var/www/html/mirzabotconfig/ || {
+    sudo mkdir -p /var/www/html/mirzaprobotconfig
+    sudo mv "$EXTRACTED_DIR"/* /var/www/html/mirzaprobotconfig/ || {
         echo -e "\e[91mFile transfer failed!\033[0m"
         exit 1
     }
@@ -1565,7 +1565,7 @@ function update_bot() {
         }
     fi
 
-    INSTALL_SCRIPT_PATH=$(find /var/www/html/mirzabotconfig -maxdepth 2 -name "install.sh" -print -quit)
+    INSTALL_SCRIPT_PATH=$(find /var/www/html/mirzaprobotconfig -maxdepth 2 -name "install.sh" -print -quit)
     if [ -n "$INSTALL_SCRIPT_PATH" ]; then
         sudo cp "$INSTALL_SCRIPT_PATH" /root/install.sh
         echo -e "\n\e[92mCopied latest install.sh to /root/install.sh.\033[0m"
@@ -1577,8 +1577,8 @@ function update_bot() {
             echo -e "\n\e[91mWarning: install.sh not found locally and download failed. Existing /root/install.sh left untouched.\033[0m"
         fi
     fi
-    sudo chown -R www-data:www-data /var/www/html/mirzabotconfig/
-    sudo chmod -R 755 /var/www/html/mirzabotconfig/
+    sudo chown -R www-data:www-data /var/www/html/mirzaprobotconfig/
+    sudo chmod -R 755 /var/www/html/mirzaprobotconfig/
 
     URL=$(grep -oP "\$domainhosts\s*=\s*[\'\"]\K[^\'\"]+" "$CONFIG_PATH" 2>/dev/null | head -1)
     if [ -z "$URL" ]; then
@@ -1632,9 +1632,9 @@ function remove_bot() {
     LOG_FILE="/var/log/remove_bot.log"
     echo "Log file: $LOG_FILE" > "$LOG_FILE"
 
-    BOT_DIR="/var/www/html/mirzabotconfig"
+    BOT_DIR="/var/www/html/mirzaprobotconfig"
     if [ ! -d "$BOT_DIR" ]; then
-        echo -e "\e[31m[ERROR]\033[0m Mirza Bot is not installed (/var/www/html/mirzabotconfig not found)." | tee -a "$LOG_FILE"
+        echo -e "\e[31m[ERROR]\033[0m Mirza Bot is not installed (/var/www/html/mirzaprobotconfig not found)." | tee -a "$LOG_FILE"
         echo -e "\e[33mNothing to remove. Exiting...\033[0m" | tee -a "$LOG_FILE"
         sleep 2
         exit 1
@@ -1713,7 +1713,7 @@ function remove_bot() {
     }
     sudo apt-get autoremove --purge -y
     sudo apt-get autoclean -y
-    sudo rm -rf /etc/apache2 /var/www/html/mirzabotconfig
+    sudo rm -rf /etc/apache2 /var/www/html/mirzaprobotconfig
 
     echo -e "\e[33mRemoving Apache and PHP configurations...\033[0m" | tee -a "$LOG_FILE"
     sudo a2disconf phpmyadmin.conf &>/dev/null
@@ -1734,7 +1734,7 @@ function remove_bot() {
 function remove_bot_with_marzban() {
     echo -e "\e[33mRemoving Mirza Bot alongside Marzban...\033[0m" | tee -a "$LOG_FILE"
 
-    BOT_DIR="/var/www/html/mirzabotconfig"
+    BOT_DIR="/var/www/html/mirzaprobotconfig"
 
     if [ ! -d "$BOT_DIR" ]; then
         echo -e "\e[93mWarning: Bot directory $BOT_DIR not found. Assuming it was already removed.\033[0m" | tee -a "$LOG_FILE"
@@ -1824,7 +1824,7 @@ function remove_bot_with_marzban() {
     }
     sudo apt-get autoremove --purge -y
     sudo apt-get autoclean -y
-    sudo rm -rf /etc/apache2 /var/www/html/mirzabotconfig
+    sudo rm -rf /etc/apache2 /var/www/html/mirzaprobotconfig
 
     echo -e "\e[33mResetting firewall rules (keeping SSL)...\033[0m" | tee -a "$LOG_FILE"
     sudo ufw delete allow 'Apache' || {
@@ -1836,7 +1836,7 @@ function remove_bot_with_marzban() {
 }
 
 function extract_db_credentials() {
-    CONFIG_PATH="/var/www/html/mirzabotconfig/config.php"
+    CONFIG_PATH="/var/www/html/mirzaprobotconfig/config.php"
     if [ -f "$CONFIG_PATH" ]; then
         DB_USER=$(grep '^\$usernamedb' "$CONFIG_PATH" | awk -F"'" '{print $2}')
         DB_PASS=$(grep '^\$passworddb' "$CONFIG_PATH" | awk -F"'" '{print $2}')
@@ -1939,7 +1939,7 @@ function import_database() {
 function auto_backup() {
     echo -e "\033[36mConfigure Automated Backup\033[0m"
 
-    BOT_DIR="/var/www/html/mirzabotconfig"
+    BOT_DIR="/var/www/html/mirzaprobotconfig"
     if [ ! -d "$BOT_DIR" ]; then
         echo -e "\033[31m[ERROR]\033[0m Mirza Bot is not installed ($BOT_DIR not found)."
         echo -e "\033[33mExiting...\033[0m"
@@ -2080,8 +2080,8 @@ function renew_ssl() {
     }
 }
 function manage_additional_bots() {
-    if [ ! -d "/var/www/html/mirzabotconfig" ]; then
-        echo -e "\033[31m[ERROR]\033[0m The main Mirza Bot is not installed (/var/www/html/mirzabotconfig not found)."
+    if [ ! -d "/var/www/html/mirzaprobotconfig" ]; then
+        echo -e "\033[31m[ERROR]\033[0m The main Mirza Bot is not installed (/var/www/html/mirzaprobotconfig not found)."
         echo -e "\033[33mYou are not allowed to use this section without the main bot installed. Exiting...\033[0m"
         sleep 2
         exit 1
@@ -2152,7 +2152,7 @@ function change_domain() {
         return 1
     fi
 
-    CONFIG_FILE="/var/www/html/mirzabotconfig/config.php"
+    CONFIG_FILE="/var/www/html/mirzaprobotconfig/config.php"
     if [ -f "$CONFIG_FILE" ]; then
         sudo cp "$CONFIG_FILE" "$CONFIG_FILE.$(date +%s).bak"
 
@@ -2166,9 +2166,9 @@ function change_domain() {
             path_segment=${path_segment%/}
         fi
 
-        if [ -z "$path_segment" ] && [ -d "/var/www/html/mirzabotconfig" ]; then
-            path_segment="mirzabotconfig"
-            log_info "No path segment detected in existing domain. Using default path '/mirzabotconfig'."
+        if [ -z "$path_segment" ] && [ -d "/var/www/html/mirzaprobotconfig" ]; then
+            path_segment="mirzaprobotconfig"
+            log_info "No path segment detected in existing domain. Using default path '/mirzaprobotconfig'."
         fi
 
         if [ -n "$path_segment" ]; then
@@ -2419,7 +2419,7 @@ function update_additional_bot() {
     clear
     echo -e "\033[36mAvailable Bots:\033[0m"
 
-    BOT_DIRS=$(ls -d /var/www/html/*/ 2>/dev/null | grep -v "/var/www/html/mirzabotconfig/" | xargs -r -n 1 basename)
+    BOT_DIRS=$(ls -d /var/www/html/*/ 2>/dev/null | grep -v "/var/www/html/mirzaprobotconfig/" | xargs -r -n 1 basename)
 
     if [ -z "$BOT_DIRS" ]; then
         echo -e "\033[31mNo additional bots found in /var/www/html.\033[0m"
@@ -2476,7 +2476,7 @@ function update_additional_bot() {
         return 1
     fi
 
-    if ! curl -s "https://$URL/mirzabotconfig/table.php"; then
+    if ! curl -s "https://$URL/mirzaprobotconfig/table.php"; then
         echo -e "\033[31mFailed to execute table.php. Exiting...\033[0m"
         return 1
     fi
@@ -2488,7 +2488,7 @@ function remove_additional_bot() {
     clear
     echo -e "\033[36mAvailable Bots:\033[0m"
 
-    BOT_DIRS=$(ls -d /var/www/html/*/ 2>/dev/null | grep -v "/var/www/html/mirzabotconfig/" | xargs -r -n 1 basename)
+    BOT_DIRS=$(ls -d /var/www/html/*/ 2>/dev/null | grep -v "/var/www/html/mirzaprobotconfig/" | xargs -r -n 1 basename)
 
     if [ -z "$BOT_DIRS" ]; then
         echo -e "\033[31mNo additional bots found in /var/www/html.\033[0m"
@@ -2584,7 +2584,7 @@ function export_additional_bot_database() {
     clear
     echo -e "\033[36mAvailable Bots:\033[0m"
 
-    BOT_DIRS=$(ls -d /var/www/html/*/ 2>/dev/null | grep -v "/var/www/html/mirzabotconfig/" | xargs -r -n 1 basename)
+    BOT_DIRS=$(ls -d /var/www/html/*/ 2>/dev/null | grep -v "/var/www/html/mirzaprobotconfig/" | xargs -r -n 1 basename)
 
     if [ -z "$BOT_DIRS" ]; then
         echo -e "\033[31mNo additional bots found in /var/www/html.\033[0m"
@@ -2710,7 +2710,7 @@ function import_additional_bot_database() {
     fi
 
     echo -e "\033[36mAvailable Bots:\033[0m"
-    BOT_DIRS=$(ls -d /var/www/html/*/ 2>/dev/null | grep -v "/var/www/html/mirzabotconfig/" | xargs -r -n 1 basename)
+    BOT_DIRS=$(ls -d /var/www/html/*/ 2>/dev/null | grep -v "/var/www/html/mirzaprobotconfig/" | xargs -r -n 1 basename)
 
     if [ -z "$BOT_DIRS" ]; then
         echo -e "\033[31mNo additional bots found in /var/www/html.\033[0m"
@@ -2764,7 +2764,7 @@ function disable_backup_additional_bot() {
     echo -e "\033[36mDisabling Automated Backup for Additional Bot...\033[0m"
 
     echo -e "\033[36mAvailable Bots:\033[0m"
-    BOT_DIRS=$(ls -d /var/www/html/*/ 2>/dev/null | grep -v "/var/www/html/mirzabotconfig/" | xargs -r -n 1 basename)
+    BOT_DIRS=$(ls -d /var/www/html/*/ 2>/dev/null | grep -v "/var/www/html/mirzaprobotconfig/" | xargs -r -n 1 basename)
 
     if [ -z "$BOT_DIRS" ]; then
         echo -e "\033[31mNo additional bots found in /var/www/html.\033[0m"
@@ -2804,7 +2804,7 @@ function configure_backup_additional_bot() {
     echo -e "\033[36mConfiguring Automated Backup for Additional Bot...\033[0m"
 
     echo -e "\033[36mAvailable Bots:\033[0m"
-    BOT_DIRS=$(ls -d /var/www/html/*/ 2>/dev/null | grep -v "/var/www/html/mirzabotconfig/" | xargs -r -n 1 basename)
+    BOT_DIRS=$(ls -d /var/www/html/*/ 2>/dev/null | grep -v "/var/www/html/mirzaprobotconfig/" | xargs -r -n 1 basename)
 
     if [ -z "$BOT_DIRS" ]; then
         echo -e "\033[31mNo additional bots found in /var/www/html.\033[0m"
